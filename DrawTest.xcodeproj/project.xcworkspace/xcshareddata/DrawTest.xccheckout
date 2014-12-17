@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C8A2AC77-B1F6-46D2-BCEA-358959E6F7A1</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DrawTest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>CFED979244C19034A98FAF9AD2953046648D728D</key>
+		<string>https://github.com/chengtanze/DrawTest.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DrawTest.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>CFED979244C19034A98FAF9AD2953046648D728D</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/chengtanze/DrawTest.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>CFED979244C19034A98FAF9AD2953046648D728D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>CFED979244C19034A98FAF9AD2953046648D728D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>DrawTest</string>
+		</dict>
+	</array>
+</dict>
+</plist>

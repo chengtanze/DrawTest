@@ -23,8 +23,14 @@
     //CGPoint pointArray[5] = {{100, 100}, {150, 150}, {100, 200}, {50, 150}, {100, 100}};
     //[self drawLine:pointArray numberOfPoint:5];
     //[self drawRectangle:CGRectMake(60,170,200,50)];
-    [self drawRoundedRect:CGRectMake(60,170,200,50)];
+    //[self drawRoundedRect:CGRectMake(60,170,200,50)];
+    //[self drawRectByBezier:CGRectMake(60,170,200,50)];
     
+    //[self drawPointByBezier];
+    
+    //[self drawArcByBezier];
+    [self drawQuadCurveBezier];
+    [self drawCubicCurveBezier];
     //[self draweCircle:CGRectMake(60,170,80,80)];
     
     //[self drawArcRect];
@@ -209,6 +215,106 @@
     
     //[path stroke];
     [path fill];
+}
+
+-(void)drawRectByBezier:(CGRect)rect{
+    
+    UIBezierPath * path;
+    
+    path = [UIBezierPath bezierPathWithRect:rect];
+    
+    //线条拐角
+    path.lineCapStyle = kCGLineCapRound;
+    //线条连接点
+    path.lineJoinStyle = kCGLineJoinRound;
+    //线宽
+    path.lineWidth = 2.0;
+    
+    UIColor * color = [UIColor redColor];
+    [color set];
+    
+    [path stroke];
+}
+
+-(void)drawPointByBezier{
+    UIBezierPath * path = [UIBezierPath bezierPath];
+    
+    [path moveToPoint:CGPointMake(100, 100)];
+    
+    [path addLineToPoint:CGPointMake(150, 100)];
+    [path addLineToPoint:CGPointMake(150, 150)];
+    
+    //线条拐角
+    path.lineCapStyle = kCGLineCapRound;
+    //线条连接点
+    path.lineJoinStyle = kCGLineJoinRound;
+    //线宽
+    path.lineWidth = 2.0;
+    
+    UIColor * color = [UIColor redColor];
+    [color set];
+    
+    
+    [path stroke];
+}
+
+-(void)drawArcByBezier{
+    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(100, 100) radius:50 startAngle:0 endAngle:M_PI_2 clockwise:YES];
+    
+    //线条拐角
+    path.lineCapStyle = kCGLineCapRound;
+    //线条连接点
+    path.lineJoinStyle = kCGLineJoinRound;
+    //线宽
+    path.lineWidth = 2.0;
+    
+    UIColor * color = [UIColor redColor];
+    [color set];
+    
+    [path stroke];
+    
+    
+
+}
+
+-(void)drawQuadCurveBezier{
+    
+    UIBezierPath * path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(150, 150)];
+    
+    [path addQuadCurveToPoint:CGPointMake(200, 200) controlPoint:CGPointMake(170, 0)];
+    
+    UIColor * color = [UIColor yellowColor];
+    [color setStroke];
+    
+    //线条拐角
+    path.lineCapStyle = kCGLineCapRound;
+    //线条连接点
+    path.lineJoinStyle = kCGLineJoinRound;
+    //线宽
+    path.lineWidth = 2.0;
+    
+    [path stroke];
+    
+}
+
+-(void)drawCubicCurveBezier{
+    UIBezierPath * path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(150, 150)];
+    
+    [path addCurveToPoint:CGPointMake(300, 200) controlPoint1:CGPointMake(170, 100) controlPoint2:CGPointMake(250, 220)];
+    
+    UIColor * color = [UIColor yellowColor];
+    [color setStroke];
+    
+    //线条拐角
+    path.lineCapStyle = kCGLineCapRound;
+    //线条连接点
+    path.lineJoinStyle = kCGLineJoinRound;
+    //线宽
+    path.lineWidth = 2.0;
+    
+    [path stroke];
 }
 
 @end
