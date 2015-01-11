@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		14241B101A2CA41A00046B11 /* CircleProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 14241B0F1A2CA41A00046B11 /* CircleProgressView.m */; };
+		148C54621A6272E6004F70EE /* PressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 148C54611A6272E6004F70EE /* PressViewController.m */; };
+		148C54651A627463004F70EE /* CircProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 148C54641A627463004F70EE /* CircProgressBarView.m */; };
 		FC530C0D1A38382A00F8EDA5 /* myTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC530C0B1A38382A00F8EDA5 /* myTableViewCell.m */; };
 		FC530C0E1A38382A00F8EDA5 /* myTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC530C0C1A38382A00F8EDA5 /* myTableViewCell.xib */; };
 		FC56E64E1A3AC668005C5F29 /* MyImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC56E64D1A3AC668005C5F29 /* MyImageView.m */; };
@@ -37,6 +39,10 @@
 /* Begin PBXFileReference section */
 		14241B0E1A2CA41A00046B11 /* CircleProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleProgressView.h; sourceTree = "<group>"; };
 		14241B0F1A2CA41A00046B11 /* CircleProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleProgressView.m; sourceTree = "<group>"; };
+		148C54601A6272E6004F70EE /* PressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PressViewController.h; sourceTree = "<group>"; };
+		148C54611A6272E6004F70EE /* PressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PressViewController.m; sourceTree = "<group>"; };
+		148C54631A627463004F70EE /* CircProgressBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircProgressBarView.h; sourceTree = "<group>"; };
+		148C54641A627463004F70EE /* CircProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircProgressBarView.m; sourceTree = "<group>"; };
 		FC530C0A1A38382A00F8EDA5 /* myTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myTableViewCell.h; sourceTree = "<group>"; };
 		FC530C0B1A38382A00F8EDA5 /* myTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myTableViewCell.m; sourceTree = "<group>"; };
 		FC530C0C1A38382A00F8EDA5 /* myTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = myTableViewCell.xib; sourceTree = "<group>"; };
@@ -83,6 +89,10 @@
 		FCCEDF401A284D84009B9912 = {
 			isa = PBXGroup;
 			children = (
+				148C54631A627463004F70EE /* CircProgressBarView.h */,
+				148C54641A627463004F70EE /* CircProgressBarView.m */,
+				148C54601A6272E6004F70EE /* PressViewController.h */,
+				148C54611A6272E6004F70EE /* PressViewController.m */,
 				FCCEDF4B1A284D84009B9912 /* DrawTest */,
 				FCCEDF681A284D84009B9912 /* DrawTestTests */,
 				FCCEDF4A1A284D84009B9912 /* Products */,
@@ -254,8 +264,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				148C54651A627463004F70EE /* CircProgressBarView.m in Sources */,
 				FCCEDF521A284D84009B9912 /* AppDelegate.m in Sources */,
 				FCCEDF4F1A284D84009B9912 /* main.m in Sources */,
+				148C54621A6272E6004F70EE /* PressViewController.m in Sources */,
 				FCCEDF581A284D84009B9912 /* ViewController.m in Sources */,
 				FC530C0D1A38382A00F8EDA5 /* myTableViewCell.m in Sources */,
 				FC56E64E1A3AC668005C5F29 /* MyImageView.m in Sources */,
