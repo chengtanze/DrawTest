@@ -8,17 +8,25 @@
 #import <math.h>
 #import "CircProgressBarView.h"
 
+
+#define CIRCPRO_START_DOWN_POINT 10.0
+#define CIRCPRO_END_DOWN_POINT   170.0
+
+#define CIRCPRO_START_UP_POINT 190.0
+#define CIRCPRO_END_UP_POINT   350.0
+
 @interface CircProgressBarView()
 {
     //CGFloat downScal;
     CGFloat downCurAngle;
+    CGFloat drawDownCurAngle;
 }
 @property(nonatomic)CGFloat downCurProgress;
 @property(nonatomic)CGFloat downMaxProgress;
 @property(nonatomic)CGFloat upCurProgress;
 @property(nonatomic)CGFloat upDownProgress;
 @property (nonatomic, strong)CAShapeLayer *ShapeLayer;
-
+@property (nonatomic, strong)UIView * viewBall;
 @end
 
 @implementation CircProgressBarView
@@ -28,21 +36,20 @@
     if (self = [super initWithFrame:frame]) {
         //[self initCircle];
         self.backgroundColor = [UIColor whiteColor];
+        drawDownCurAngle = CIRCPRO_START_DOWN_POINT;
         
-        
+        self.viewBall = [[UIView alloc]initWithFrame:CGRectMake(250, 250, 20, 20)];
+        self.viewBall.layer.cornerRadius = 20 / 2.0;
+        self.viewBall.layer.masksToBounds = YES;
         
         self.ShapeLayer = [CAShapeLayer layer];
-        //self.ShapeLayer.backgroundColor = [UIColor yellowColor].CGColor;
         self.ShapeLayer.lineCap = kCALineCapRound;
         self.ShapeLayer.lineJoin = kCALineJoinBevel;
-        //self.ShapeLayer.fillColor   = [[UIColor whiteColor] CGColor];
+        self.ShapeLayer.fillColor   = [[UIColor clearColor] CGColor];
         self.ShapeLayer.lineWidth   = 5.0;
         self.ShapeLayer.strokeEnd   = 0.0;
         self.ShapeLayer.strokeColor   = [UIColor greenColor].CGColor;
         [self.layer addSublayer:self.ShapeLayer];
-        
-        
-
     };
     
     return self;
@@ -58,13 +65,31 @@
     return self;
 }
 
+
+//timer调用函数
+-(void)timerFired:(NSTimer *)timer{
+    if (drawDownCurAngle <= downCurAngle) {
+        drawDownCurAngle += 4;
+        [self setNeedsDisplay];
+    }
+    else{
+        [timer invalidate];
+        drawDownCurAngle = CIRCPRO_START_DOWN_POINT;
+    }
+}
+
 -(void)setCurrentProgress:(CGFloat)curProgress MaxProgress:(CGFloat)maxProgress{
     self.downCurProgress = curProgress;
     self.downMaxProgress = maxProgress;
+    downCurAngle = curProgress / maxProgress  * CIRCPRO_END_DOWN_POINT;
     
+    NSTimer* connectionTimer=[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    [connectionTimer fire];
+    
+    return;
     [self DrawBall];
     
-    downCurAngle = curProgress / maxProgress  * 170.0;
+    
     
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(150, 150) radius:100 startAngle:10.0 * M_PI / 180.0 endAngle:80.0 * M_PI / 180.0 clockwise:YES];
     self.ShapeLayer.path = path.CGPath;
@@ -176,15 +201,45 @@
     [self addSubview:view];
 }
 
+
+//画带角度的直线
+-(void)drawLine:(CGPoint)start radius:(CGFloat)radius withAngle:(float)angle
+{
+    CGPoint point;
+    float radian = 0.0;
+    if (angle >= 0.0 && angle <= 90.0) {
+        radian = angle * M_PI / 180.0;
+        point.x = start.x + radius * cos(radian);
+        point.y = start.y + radius * sin(radian);
+    }
+    else if (angle > 90.0 && angle <= 180.0){
+        radian = (angle - 90.0)* M_PI / 180.0;
+        point.x = start.x - radius * sin(radian);
+        point.y = start.y + radius * cos(radian);
+    }else if (angle > 180.0 && angle <= 270.0){
+        radian = (angle - 180.0)* M_PI / 180.0;
+        point.x = start.x - radius * cos(radian);
+        point.y = start.y - radius * sin(radian);
+    }else{
+        radian = (angle - 270.0)* M_PI / 180.0;
+        point.x = start.x + radius * sin(radian);
+        point.y = start.y - radius * cos(radian);
+    }
+    
+    
+}
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    [self drawAngle:10 endAngle:170 Color:[UIColor redColor]];
-    //[self drawAngle:10 endAngle:downCurAngle Color:[UIColor whiteColor]];
+    [self drawAngle:CIRCPRO_START_DOWN_POINT endAngle:CIRCPRO_END_DOWN_POINT Color:[UIColor redColor]];
+
+    [self drawAngle:CIRCPRO_START_DOWN_POINT endAngle:drawDownCurAngle Color:[UIColor blueColor]];
     
-    //[self drawAngle:190 endAngle:350];
+    
 }
+
 
 
 
