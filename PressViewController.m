@@ -26,7 +26,7 @@
     
     
     [self.view addSubview:view];
-    [view setCurrentProgress:50.0 MaxProgress:100.0];
+    [view setCurrentProgress:90.0 MaxProgress:100.0];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -19,14 +19,18 @@
 {
     //CGFloat downScal;
     CGFloat downCurAngle;
+    CGFloat upCurAngle;
+    
     CGFloat drawDownCurAngle;
+    CGFloat drawUpCurAngle;
 }
 @property(nonatomic)CGFloat downCurProgress;
 @property(nonatomic)CGFloat downMaxProgress;
 @property(nonatomic)CGFloat upCurProgress;
 @property(nonatomic)CGFloat upDownProgress;
 @property (nonatomic, strong)CAShapeLayer *ShapeLayer;
-@property (nonatomic, strong)UIView * viewBall;
+@property (nonatomic, strong)UIView * viewUpBall;
+@property (nonatomic, strong)UIView * viewDownBall;
 @end
 
 @implementation CircProgressBarView
@@ -37,10 +41,19 @@
         //[self initCircle];
         self.backgroundColor = [UIColor whiteColor];
         drawDownCurAngle = CIRCPRO_START_DOWN_POINT;
+        drawUpCurAngle = CIRCPRO_START_UP_POINT;
         
-        self.viewBall = [[UIView alloc]initWithFrame:CGRectMake(250, 250, 20, 20)];
-        self.viewBall.layer.cornerRadius = 20 / 2.0;
-        self.viewBall.layer.masksToBounds = YES;
+        self.viewUpBall = [[UIView alloc]initWithFrame:CGRectMake(250, 250, 20, 20)];
+        self.viewUpBall.backgroundColor = [UIColor blueColor];
+        self.viewUpBall.layer.cornerRadius = 20 / 2.0;
+        self.viewUpBall.layer.masksToBounds = YES;
+        [self addSubview:self.viewUpBall];
+        
+        self.viewDownBall = [[UIView alloc]initWithFrame:CGRectMake(250, 250, 20, 20)];
+        self.viewDownBall.backgroundColor = [UIColor blueColor];
+        self.viewDownBall.layer.cornerRadius = 20 / 2.0;
+        self.viewDownBall.layer.masksToBounds = YES;
+        [self addSubview:self.viewDownBall];
         
         self.ShapeLayer = [CAShapeLayer layer];
         self.ShapeLayer.lineCap = kCALineCapRound;
@@ -64,17 +77,42 @@
     }
     return self;
 }
-
+BOOL maxValue;
 
 //timer调用函数
 -(void)timerFired:(NSTimer *)timer{
-    if (drawDownCurAngle <= downCurAngle) {
+    
+    
+    static BOOL bret = NO;
+    if (bret == NO) {
+        maxValue = (downCurAngle - drawDownCurAngle) >= (upCurAngle - drawUpCurAngle);
+        bret = YES;
+    }
+    
+
+    
+    
+    if (maxValue == YES && drawDownCurAngle <= downCurAngle) {
         drawDownCurAngle += 4;
+        
+        if(drawUpCurAngle <= upCurAngle)
+            drawUpCurAngle += 4;
+        
         [self setNeedsDisplay];
     }
+    else if (maxValue == NO && drawUpCurAngle <= upCurAngle){
+        drawUpCurAngle += 4;
+        
+        if(drawDownCurAngle <= downCurAngle)
+            drawDownCurAngle += 4;
+        
+        [self setNeedsDisplay];
+    }
+
     else{
         [timer invalidate];
         drawDownCurAngle = CIRCPRO_START_DOWN_POINT;
+        drawUpCurAngle = CIRCPRO_START_UP_POINT;
     }
 }
 
@@ -83,11 +121,13 @@
     self.downMaxProgress = maxProgress;
     downCurAngle = curProgress / maxProgress  * CIRCPRO_END_DOWN_POINT;
     
+    upCurAngle = 20.0 / maxProgress  * (CIRCPRO_END_UP_POINT - CIRCPRO_START_UP_POINT) + CIRCPRO_START_UP_POINT;
+    
     NSTimer* connectionTimer=[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
     [connectionTimer fire];
     
     return;
-    [self DrawBall];
+    
     
     
     
@@ -154,7 +194,7 @@
      角度 = 弧度 * 180 / PI
      */
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 5.0);
+    CGContextSetLineWidth(context, 2.0);
     CGContextBeginPath(context);
     
     CGContextSetLineCap(context, kCGLineCapRound);
@@ -163,6 +203,64 @@
     CGContextAddArc(context, 150, 150, 100, startAngle * M_PI / 180, endAngle * M_PI / 180, 0);
     CGContextStrokePath(context);
 }
+
+-(void)drawDownBallOnCir:(CGPoint)start radius:(CGFloat)radius withAngle:(float)angle{
+    CGPoint point = [self getPointOnCir:start radius:radius withAngle:angle];
+    
+    self.viewDownBall.center = point;
+}
+
+-(void)drawUpBallOnCir:(CGPoint)start radius:(CGFloat)radius withAngle:(float)angle{
+    CGPoint point = [self getPointOnCir:start radius:radius withAngle:angle];
+    
+    self.viewUpBall.center = point;
+}
+
+//画带角度的直线
+-(CGPoint)getPointOnCir:(CGPoint)start radius:(CGFloat)radius withAngle:(float)angle
+{
+    CGPoint point;
+    float radian = 0.0;
+    if (angle >= 0.0 && angle <= 90.0) {
+        radian = angle * M_PI / 180.0;
+        point.x = start.x + radius * cos(radian);
+        point.y = start.y + radius * sin(radian);
+    }
+    else if (angle > 90.0 && angle <= 180.0){
+        radian = (angle - 90.0)* M_PI / 180.0;
+        point.x = start.x - radius * sin(radian);
+        point.y = start.y + radius * cos(radian);
+    }else if (angle > 180.0 && angle <= 270.0){
+        radian = (angle - 180.0)* M_PI / 180.0;
+        point.x = start.x - radius * cos(radian);
+        point.y = start.y - radius * sin(radian);
+    }else{
+        radian = (angle - 270.0)* M_PI / 180.0;
+        point.x = start.x + radius * sin(radian);
+        point.y = start.y - radius * cos(radian);
+    }
+    
+    return point;
+}
+
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+    [self drawAngle:CIRCPRO_START_DOWN_POINT endAngle:CIRCPRO_END_DOWN_POINT Color:[UIColor redColor]];
+
+    [self drawAngle:CIRCPRO_START_DOWN_POINT endAngle:drawDownCurAngle Color:[UIColor blueColor]];
+    
+    [self drawDownBallOnCir:CGPointMake(150, 150) radius:100 withAngle:drawDownCurAngle];
+    
+    
+    [self drawAngle:CIRCPRO_START_UP_POINT endAngle:CIRCPRO_END_UP_POINT Color:[UIColor redColor]];
+    
+    [self drawAngle:CIRCPRO_START_UP_POINT endAngle:drawUpCurAngle Color:[UIColor blueColor]];
+    
+    [self drawUpBallOnCir:CGPointMake(150, 150) radius:100 withAngle:drawUpCurAngle];
+}
+
 
 -(void)DrawBall{
     UIView * view = [[UIView alloc]initWithFrame:CGRectMake(150, 100, 10, 10)];
@@ -199,45 +297,6 @@
     [view.layer addAnimation:keyAnima forKey:nil];
     
     [self addSubview:view];
-}
-
-
-//画带角度的直线
--(void)drawLine:(CGPoint)start radius:(CGFloat)radius withAngle:(float)angle
-{
-    CGPoint point;
-    float radian = 0.0;
-    if (angle >= 0.0 && angle <= 90.0) {
-        radian = angle * M_PI / 180.0;
-        point.x = start.x + radius * cos(radian);
-        point.y = start.y + radius * sin(radian);
-    }
-    else if (angle > 90.0 && angle <= 180.0){
-        radian = (angle - 90.0)* M_PI / 180.0;
-        point.x = start.x - radius * sin(radian);
-        point.y = start.y + radius * cos(radian);
-    }else if (angle > 180.0 && angle <= 270.0){
-        radian = (angle - 180.0)* M_PI / 180.0;
-        point.x = start.x - radius * cos(radian);
-        point.y = start.y - radius * sin(radian);
-    }else{
-        radian = (angle - 270.0)* M_PI / 180.0;
-        point.x = start.x + radius * sin(radian);
-        point.y = start.y - radius * cos(radian);
-    }
-    
-    
-}
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-    [self drawAngle:CIRCPRO_START_DOWN_POINT endAngle:CIRCPRO_END_DOWN_POINT Color:[UIColor redColor]];
-
-    [self drawAngle:CIRCPRO_START_DOWN_POINT endAngle:drawDownCurAngle Color:[UIColor blueColor]];
-    
-    
 }
 
 
